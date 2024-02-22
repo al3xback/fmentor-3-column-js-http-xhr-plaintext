@@ -4,7 +4,7 @@ const URL =
 	'https://gist.githubusercontent.com/al3xback/c9f5e86a2664af7f17a38792e5e5672e/raw/c5a7c9e58204b39e098448d0fea07fe7b0c903d8/3-column-data.txt';
 
 const cardsWrapperEl = document.querySelector('.cards-wrapper');
-const cardsEl = document.querySelector('.cards');
+const cardsTemplate = document.getElementById('cards-template');
 const cardTemplate = document.getElementById('card-template');
 const loadingEl = document.querySelector('.loading');
 
@@ -32,7 +32,8 @@ const renderCardsContent = (data) => {
 		carsData.push(filteredData.slice(i, i + size));
 	}
 
-	removeLoading();
+	const cardsTemplateNode = document.importNode(cardsTemplate.content, true);
+	const cardsEl = cardsTemplateNode.querySelector('.cards');
 
 	for (const car of carsData) {
 		const [name, description] = car;
@@ -55,6 +56,10 @@ const renderCardsContent = (data) => {
 
 		cardsEl.appendChild(cardTemplateNode);
 	}
+
+	/* [init] */
+	removeLoading();
+	cardsWrapperEl.appendChild(cardsTemplateNode);
 };
 
 sendHttpRequest('GET', URL, renderCardsContent, handleError);
